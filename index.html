@@ -34,12 +34,20 @@ body {
 }
 
 /* ─── LANG TOGGLE ─── */
-[data-lang="pt"] { display: none; }
-body.pt [data-lang="en"] { display: none; }
-body.pt [data-lang="pt"] { display: block; }
-span[data-lang="pt"], span[data-lang="en"] { display: inline; }
-body.pt span[data-lang="en"] { display: none; }
-body.pt span[data-lang="pt"] { display: inline; }
+/* Default: show EN, hide PT */
+[data-lang="pt"] { display: none !important; }
+span[data-lang="pt"] { display: none !important; }
+
+/* When body has .pt class: show PT, hide EN */
+body.pt [data-lang="en"] { display: none !important; }
+body.pt [data-lang="pt"] { display: block !important; }
+body.pt span[data-lang="en"] { display: none !important; }
+body.pt span[data-lang="pt"] { display: inline !important; }
+
+/* Nav links and buttons use inline elements */
+a[data-lang], button[data-lang] { display: inline !important; }
+body.pt a[data-lang="en"], body.pt button[data-lang="en"] { display: none !important; }
+body.pt a[data-lang="pt"], body.pt button[data-lang="pt"] { display: inline !important; }
 
 /* ─── NAV ─── */
 nav {
