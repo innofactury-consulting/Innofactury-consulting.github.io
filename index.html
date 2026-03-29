@@ -34,20 +34,12 @@ body {
 }
 
 /* ─── LANG TOGGLE ─── */
-/* Default: show EN, hide PT */
+/* Default language: EN. Everything PT is hidden. */
 [data-lang="pt"] { display: none !important; }
-span[data-lang="pt"] { display: none !important; }
 
-/* When body has .pt class: show PT, hide EN */
+/* PT mode: hide EN, show PT */
 body.pt [data-lang="en"] { display: none !important; }
-body.pt [data-lang="pt"] { display: block !important; }
-body.pt span[data-lang="en"] { display: none !important; }
-body.pt span[data-lang="pt"] { display: inline !important; }
-
-/* Nav links and buttons use inline elements */
-a[data-lang], button[data-lang] { display: inline !important; }
-body.pt a[data-lang="en"], body.pt button[data-lang="en"] { display: none !important; }
-body.pt a[data-lang="pt"], body.pt button[data-lang="pt"] { display: inline !important; }
+body.pt [data-lang="pt"] { display: revert !important; }
 
 /* ─── NAV ─── */
 nav {
@@ -1185,10 +1177,11 @@ footer {
   <div class="pricing-grid">
     <div class="price-card">
       <div class="price-plan">Starter</div>
-      <div class="price-amount">R$297<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mês</span></div>
+      <div class="price-amount" data-lang="en">$59<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mo</span></div>
+      <div class="price-amount" data-lang="pt">$59<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mo</span></div>
       <div class="price-period">
-        <span data-lang="en">or $59/mo · billed monthly</span>
-        <span data-lang="pt">cobrado mensalmente</span>
+        <span data-lang="en">billed monthly · USD</span>
+        <span data-lang="pt">cobrado mensalmente em USD · aprox. R$297/mês</span>
       </div>
       <p class="price-for">
         <span data-lang="en">Companies up to 50 people. 1 business unit. Standard hierarchy setup.</span>
@@ -1213,10 +1206,11 @@ footer {
         <span data-lang="pt">Mais Popular</span>
       </div>
       <div class="price-plan">Growth</div>
-      <div class="price-amount" style="color:white">R$697<span style="font-size:1rem;font-weight:400;color:rgba(255,255,255,.6)">/mês</span></div>
+      <div class="price-amount" data-lang="en" style="color:white">$139<span style="font-size:1rem;font-weight:400;color:rgba(255,255,255,.6)">/mo</span></div>
+      <div class="price-amount" data-lang="pt" style="color:white">$139<span style="font-size:1rem;font-weight:400;color:rgba(255,255,255,.6)">/mo</span></div>
       <div class="price-period">
-        <span data-lang="en">or $139/mo · billed monthly</span>
-        <span data-lang="pt">cobrado mensalmente</span>
+        <span data-lang="en">billed monthly · USD</span>
+        <span data-lang="pt">cobrado mensalmente em USD · aprox. R$697/mês</span>
       </div>
       <p class="price-for">
         <span data-lang="en">51–200 people. Multi-unit. Custom hierarchy and areas. Priority support.</span>
@@ -1237,10 +1231,11 @@ footer {
 
     <div class="price-card">
       <div class="price-plan">Enterprise</div>
-      <div class="price-amount">R$1.497<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mês</span></div>
+      <div class="price-amount" data-lang="en">$299<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mo</span></div>
+      <div class="price-amount" data-lang="pt">$299<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mo</span></div>
       <div class="price-period">
-        <span data-lang="en">or $299/mo · custom billing</span>
-        <span data-lang="pt">faturamento customizado</span>
+        <span data-lang="en">custom billing · USD</span>
+        <span data-lang="pt">faturamento customizado em USD · aprox. R$1.497/mês</span>
       </div>
       <p class="price-for">
         <span data-lang="en">200+ people. Groups & conglomerates. White-label. SLA. HR system integration.</span>
@@ -1261,8 +1256,8 @@ footer {
   </div>
 
   <p style="text-align:center;font-size:.76rem;color:var(--muted);margin-top:28px;font-family:'DM Mono',monospace;letter-spacing:.04em">
-    <span data-lang="en">+ R$1,500 one-time setup fee (all plans) · Prices in BRL and USD · Contracts via InnoFactury Consulting LLC</span>
-    <span data-lang="pt">+ R$1.500 taxa única de setup (todos os planos) · Contratos via InnoFactury Consulting LLC</span>
+    <span data-lang="en">+ $300 one-time setup fee (all plans) · All prices in USD · Contracts via InnoFactury Consulting LLC</span>
+    <span data-lang="pt">+ $300 taxa única de setup (todos os planos) · Todos os preços em USD · Contratos via InnoFactury Consulting LLC</span>
   </p>
 </section>
 
@@ -1400,8 +1395,16 @@ footer {
 function toggleLang(){
   document.body.classList.toggle('pt');
   const btn=document.getElementById('langToggle');
-  btn.textContent=document.body.classList.contains('pt')?'EN / PT':'PT / EN';
+  const isPT = document.body.classList.contains('pt');
+  btn.innerHTML = isPT
+    ? '<strong>PT</strong> &nbsp;/&nbsp; EN'
+    : 'PT &nbsp;/&nbsp; <strong>EN</strong>';
 }
+// Set default button state on load
+window.addEventListener('DOMContentLoaded', function(){
+  const btn = document.getElementById('langToggle');
+  if(btn) btn.innerHTML = 'PT &nbsp;/&nbsp; <strong>EN</strong>';
+});
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
